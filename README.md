@@ -32,6 +32,13 @@ async def fetch_example_results(session):
     )
     print(character)
 
+    # Search Lodestone for a free company
+    freecompany = await client.freecompany_search(
+        world="gilgamesh", 
+        name="Elysium"
+    )
+    print(freecompany)
+
     # Fuzzy search XIVAPI game data for a recipe by name. Results will be in English.
     recipe = await client.index_search(
         name="Crimson Cider", 
@@ -59,6 +66,13 @@ async def fetch_example_results(session):
         language="de"
     )
     print(item)
+
+    # Search ingame data for matches against a given query. Includes item, minion, mount & achievement descriptions, quest dialog & more.
+    lore = await client.lore_search(
+        query="Shiva",
+        language="fr"
+    )
+    print(lore)
 
     # Get current sales & sale history of an item (Shakshouka) on Phoenix & Odin
     market = await client.market_by_worlds(
