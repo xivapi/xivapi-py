@@ -3,7 +3,7 @@ import logging
 
 import aiohttp
 
-from .exceptions import XIVAPIBadRequest, XIVAPIForbidden, XIVAPIInvalidLanguage, XIVAPIErrorOrMaintenance
+from .exceptions import XIVAPIBadRequest, XIVAPIForbidden, XIVAPIInvalidLanguage, XIVAPIErrorOrMaintenance, XIVAPIInvalidIndex, XIVAPIInvalidColumns
 
 __log__ = logging.getLogger(__name__)
 
@@ -40,7 +40,7 @@ class Client:
             return await self.process_response(response)
 
 
-    async def character_by_id(self, lodestone_id):
+    async def character_by_id(self, lodestone_id: int):
         """|coro|
         Request character data from XIVAPI.com
         Parameters
@@ -68,7 +68,7 @@ class Client:
             return await self.process_response(response)
 
 
-    async def freecompany_by_id(self, lodestone_id):
+    async def freecompany_by_id(self, lodestone_id: int):
         """|coro|
         Request Free Company data from XIVAPI.com by Lodestone ID
         Parameters
@@ -81,16 +81,19 @@ class Client:
             return await self.process_response(response)
     
 
-    async def recipe_search(self, name, columns=[], string_algo=None, language="en"):
+    async def index_search(self, name, indexes=[], columns=[], string_algo=None, language="en"):
         """|coro|
-        Search for rceipe data.
+        Search for data from on specific indexes.
         Parameters
         ------------
         name: str
             The name of the item to retrieve the recipe data for.
+        indexes: list
+            A named list of indexes to search XIVAPI. At least one must be specified.
+            e.g. ["Recipe", "Item"]
         Optional[columns: list]
             A named list of columns to return in the response. ID, Name, Icon & ItemDescription will be returned by default.
-            e.g. ["ID", "Name", "Icon", "ItemResult.Description"]
+            e.g. ["ID", "Name", "Icon"]
         Optional[string_algo: str]
             The string algorithm to use for matching results. Defaults to wildcard if None.
         Optional[language: str]
@@ -98,22 +101,48 @@ class Client:
             Valid values are "en", "fr", "de" & "ja"
         """
 
+        if len(indexes) == 0:
+            raise XIVAPIInvalidIndex("Please specify at least one index to search for, e.g. [\"Recipe\"]")
+
         if language.lower() not in self.languages:
             raise XIVAPIInvalidLanguage(f'"{language}" is not a valid language code for XIVAPI.')
 
         params = {
-            "indexes": "Recipe",
             "private_key": self.api_key,
             "language": language
         }
 
-        if len(columns) > 0:
-            params["columns"] = ",".join(list(set(columns)))
+        if len(indexes) > 0:
+            params["indexes"] = ",".join(list(set(indexes)))
+
+        if len(columns) == 0:
+            raise XIVAPIInvalidColumns("Please specify at least one column to return in the resulting data.")
+
+        params["columns"] = ",".join(list(set(columns)))
 
         if string_algo:
             params["string_algo"] = string_algo
 
         url = f'{self.base_url}/search?string={name}'
+        async with self.session.get(url, params=params) as response:
+            return await self.process_response(response)
+
+
+    async def index_by_id(self, index, content_id: int, columns=[], language="en"):
+        if index == "":
+            raise XIVAPIInvalidIndex("Please specify an index to search on, e.g. \"Item\"")
+
+        params = {
+            "private_key": self.api_key,
+            "language": language
+        }
+
+        if len(columns) == 0:
+            raise XIVAPIInvalidColumns("Please specify at least one column to return in the resulting data.")
+
+        params["columns"] = ",".join(list(set(columns)))
+
+        url = f'{self.base_url}/{index}/{content_id}'
         async with self.session.get(url, params=params) as response:
             return await self.process_response(response)
 

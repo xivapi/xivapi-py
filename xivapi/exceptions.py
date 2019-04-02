@@ -19,6 +19,20 @@ class XIVAPIInvalidLanguage(Exception):
     pass
 
 
+class XIVAPIInvalidIndex(Exception):
+    """
+    XIVAPI Invalid Index error
+    """
+    pass
+
+
+class XIVAPIInvalidColumns(Exception):
+    """
+    XIVAPI Invalid Columns error
+    """
+    pass
+
+
 class XIVAPIErrorOrMaintenance(Exception):
     """
     XIVAPI Maintenance error

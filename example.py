@@ -11,15 +11,27 @@ async def fetch_example_results(session):
     character = await client.character_search("phoenix", "lethys", "luculentus")
     print(character)
 
-    recipe_columns = ["ID", "Name", "Icon", "ItemResult.Description"]
-
     # Fuzzy search XIVAPI game data for a recipe by name. Results will be in English.
-    recipe = await client.recipe_search("Crimson Cider", columns=recipe_columns, string_algo="fuzzy")
+    recipe = await client.index_search("Crimson Cider", 
+        indexes=["Recipe"], 
+        columns=["ID", "Name", "Icon", "ItemResult.Description"], 
+        string_algo="fuzzy")
     print(recipe)
 
     # Fuzzy search XIVAPI game data for a recipe by name. Results will be in French.
-    recipe = await client.recipe_search("Cidre carmin", columns=recipe_columns, string_algo="fuzzy", language="fr")
+    recipe = await client.index_search("Cidre carmin", 
+        indexes=["Recipe"], 
+        columns=["ID", "Name", "Icon", "ItemResult.Description"], 
+        string_algo="fuzzy", 
+        language="fr")
     print(recipe)
+
+    # Get an item by its ID (Omega Rod) and return the data in German
+    item = await client.index_by_id(index="Item", 
+        content_id=23575, 
+        columns=["ID", "Name", "Icon", "ItemUICategory.Name"], 
+        language="de")
+    print(item)
 
     await session.close()
 
