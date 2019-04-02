@@ -13,7 +13,7 @@ pip install xivapi.py
 ```
 
 ## Example
-```
+```python
 import asyncio
 
 import aiohttp
