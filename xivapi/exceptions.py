@@ -14,27 +14,41 @@ class XIVAPIBadRequest(Exception):
 
 class XIVAPIInvalidLanguage(Exception):
     """
-    XIVAPI Invalid Language error
+    XIVAPI invalid language error
     """
     pass
 
 
 class XIVAPIInvalidIndex(Exception):
     """
-    XIVAPI Invalid Index error
+    XIVAPI invalid index error
     """
     pass
 
 
 class XIVAPIInvalidColumns(Exception):
     """
-    XIVAPI Invalid Columns error
+    XIVAPI invalid columns error
+    """
+    pass
+
+
+class XIVAPIInvalidWorlds(Exception):
+    """
+    XIVAPI invalid world(s) error
+    """
+    pass
+
+
+class XIVAPIInvalidDatacenter(Exception):
+    """
+    XIVAPI invalid datacenter error
     """
     pass
 
 
 class XIVAPIErrorOrMaintenance(Exception):
     """
-    XIVAPI Maintenance error
+    XIVAPI maintenance error
     """
     pass

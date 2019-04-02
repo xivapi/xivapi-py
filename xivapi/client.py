@@ -3,7 +3,7 @@ import logging
 
 import aiohttp
 
-from .exceptions import XIVAPIBadRequest, XIVAPIForbidden, XIVAPIInvalidLanguage, XIVAPIErrorOrMaintenance, XIVAPIInvalidIndex, XIVAPIInvalidColumns
+from .exceptions import XIVAPIBadRequest, XIVAPIForbidden, XIVAPIInvalidLanguage, XIVAPIErrorOrMaintenance, XIVAPIInvalidIndex, XIVAPIInvalidColumns, XIVAPIInvalidWorlds, XIVAPIInvalidDatacenter
 
 __log__ = logging.getLogger(__name__)
 
@@ -45,7 +45,7 @@ class Client:
         Request character data from XIVAPI.com
         Parameters
         ------------
-        lodestone_id: str
+        lodestone_id: int
             The character's Lodestone ID.
         """
         url = f'{self.base_url}/character/{lodestone_id}?private_key={self.api_key}'
@@ -73,7 +73,7 @@ class Client:
         Request Free Company data from XIVAPI.com by Lodestone ID
         Parameters
         ------------
-        lodestone_id: str
+        lodestone_id: int
             The Free Company's Lodestone ID.
         """
         url = f'{self.base_url}/freecompany/{lodestone_id}?private_key={self.api_key}'
@@ -107,18 +107,17 @@ class Client:
         if language.lower() not in self.languages:
             raise XIVAPIInvalidLanguage(f'"{language}" is not a valid language code for XIVAPI.')
 
-        params = {
-            "private_key": self.api_key,
-            "language": language
-        }
-
-        if len(indexes) > 0:
-            params["indexes"] = ",".join(list(set(indexes)))
-
         if len(columns) == 0:
             raise XIVAPIInvalidColumns("Please specify at least one column to return in the resulting data.")
 
-        params["columns"] = ",".join(list(set(columns)))
+        params = {
+            "private_key": self.api_key,
+            "language": language,
+            "indexes": ",".join(list(set(indexes)))
+        }
+
+        if len(columns) > 0:
+            params["columns"] = ",".join(list(set(columns)))
 
         if string_algo:
             params["string_algo"] = string_algo
@@ -129,20 +128,90 @@ class Client:
 
 
     async def index_by_id(self, index, content_id: int, columns=[], language="en"):
+        """|coro|
+        Request data from a given index by ID.
+        Parameters
+        ------------
+        index: str
+            The index to which the content is attributed.
+        content_id: int
+            The ID of the content
+        Optional[columns: list]
+            A named list of columns to return in the response. ID, Name, Icon & ItemDescription will be returned by default.
+            e.g. ["ID", "Name", "Icon"]
+        Optional[language: str]
+            The two character length language code that indicates the language to return the response in. Defaults to English (en).
+            Valid values are "en", "fr", "de" & "ja"
+        """
         if index == "":
             raise XIVAPIInvalidIndex("Please specify an index to search on, e.g. \"Item\"")
+
+        if len(columns) == 0:
+            raise XIVAPIInvalidColumns("Please specify at least one column to return in the resulting data.")
 
         params = {
             "private_key": self.api_key,
             "language": language
         }
 
-        if len(columns) == 0:
-            raise XIVAPIInvalidColumns("Please specify at least one column to return in the resulting data.")
-
-        params["columns"] = ",".join(list(set(columns)))
+        if len(columns) > 0:
+            params["columns"] = ",".join(list(set(columns)))
 
         url = f'{self.base_url}/{index}/{content_id}'
+        async with self.session.get(url, params=params) as response:
+            return await self.process_response(response)
+    
+
+    async def market_by_worlds(self, item_id: int, worlds=[], max_history=25):
+        """|coro|
+        Request current sale listings & sale history for a given item on specified FFXIV worlds.
+        Parameters
+        ------------
+        item_id: int
+            The ID of the sellable item.
+        worlds: list
+            A named list of worlds to return in the response. At least one world is required.
+            e.g. ["Phoenix", "Gilgamesh", "Tonberry"]
+        Optional[max_history: int]
+            The maximum number of history records to return. Default is 25.
+        """
+        worlds_count = len(worlds)
+        if worlds_count < 1 or worlds_count > 15:
+             raise XIVAPIInvalidWorlds("Please provide a list of valid names of FFXIV worlds e.g. [\"Phoenix\", \"Gilgamesh\", \"Tonberry\"]")
+
+        params = {
+            "private_key": self.api_key,
+            "servers": ",".join(list(set(worlds))),
+            "max_history": max_history
+        }
+
+        url = f'{self.base_url}/market/item/{item_id}'
+        async with self.session.get(url, params=params) as response:
+            return await self.process_response(response)
+
+
+    async def market_by_datacenter(self, item_id: int, datacenter, max_history=25):
+        """|coro|
+        Request current sale listings & sale history for a given item on all worlds on a specified FFXIV datacenter.
+        Parameters
+        ------------
+        item_id: int
+            The ID of the sellable item.
+        datacenter: str
+            The name of the FFXIV datacenter from which to request data.
+        Optional[max_history: int]
+            The maximum number of history records to return. Default is 25.
+        """
+        if datacenter == "":
+            raise XIVAPIInvalidDatacenter("Please provide a valid name of an FFXIV Datacenter e.g. \"Chaos\", \"Aether\", \"Elemental\", e.t.c.")
+
+        params = {
+            "private_key": self.api_key,
+            "dc": datacenter,
+            "max_history": max_history
+        }
+
+        url = f'{self.base_url}/market/item/{item_id}'
         async with self.session.get(url, params=params) as response:
             return await self.process_response(response)
 
