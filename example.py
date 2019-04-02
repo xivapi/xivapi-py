@@ -6,7 +6,7 @@ import xivapi
 
 
 async def fetch_example_results(session):
-    client = xivapi.Client(session=session, api_key="4cb3f91945ba44d8ad09e5bac0c29fbf79b0128cfe0d4c75a80e85278de8a181")
+    client = xivapi.Client(session=session, api_key="your_key_here")
 
     # Search Lodestone for a character
     character = await client.character_search(
@@ -43,6 +43,9 @@ async def fetch_example_results(session):
         language="de"
     )
     print(item)
+
+    lore = await client.lore_search(query="Shiva")
+    print(lore)
 
     # Get current sales & sale history of an item (Shakshouka) on Phoenix & Odin
     market = await client.market_by_worlds(
