@@ -199,7 +199,29 @@ class Client:
         url = f'{self.base_url}/{index}/{content_id}'
         async with self.session.get(url, params=params) as response:
             return await self.process_response(response)
-    
+
+
+    async def lore_search(self, query, language="en"):
+        """|coro|
+        Search cutscene subtitles, quest dialog, item, achievement, mount & minion descriptions and more for any text that matches query.
+        Parameters
+        ------------
+        query: str
+            The text to search game content for.
+        Optional[language: str]
+            The two character length language code that indicates the language to return the response in. Defaults to English (en).
+            Valid values are "en", "fr", "de" & "ja"
+        """
+        params = {
+            "private_key": self.api_key,
+            "language": language,
+            "string": query
+        }
+
+        url = f'{self.base_url}/lore'
+        async with self.session.get(url, params=params) as response:
+            return await self.process_response(response)
+
 
     async def market_by_worlds(self, item_id: int, worlds=[], max_history=25):
         """|coro|
