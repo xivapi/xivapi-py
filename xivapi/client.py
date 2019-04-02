@@ -10,9 +10,13 @@ __log__ = logging.getLogger(__name__)
 
 class Client:
     """
-    Client for accessing XIVAPI's endpoints.
-
-    :ivar api_key: The API key used for identifying your application with XIVAPI.com.
+    Asynchronous client for accessing XIVAPI's endpoints.
+    Parameters
+    ------------
+    session: aiohttp.ClientSession()
+        The aiohttp session used with which to make http requests
+    api_key: str
+        The API key used for identifying your application with XIVAPI.com.
     """
 
     def __init__(self, session, api_key):
@@ -49,6 +53,40 @@ class Client:
             The character's Lodestone ID.
         """
         url = f'{self.base_url}/character/{lodestone_id}?private_key={self.api_key}'
+        async with self.session.get(url) as response:
+            return await self.process_response(response)
+
+
+    async def character_verify(self, lodestone_id: int, token):
+        """|coro|
+        Request character data from XIVAPI.com
+        Parameters
+        ------------
+        lodestone_id: int
+            The character's Lodestone ID.
+        token: str
+            The string token on a character's Lodestone profile to test against
+        """
+
+        params = {
+            "private_key": self.api_key,
+            "token": token
+        }
+
+        url = f'{self.base_url}/character/{lodestone_id}/verification'
+        async with self.session.get(url, params=params) as response:
+            return await self.process_response(response)
+
+
+    async def character_update(self, lodestone_id: int):
+        """|coro|
+        Request a character to be updated as soon as possible
+        Parameters
+        ------------
+        lodestone_id: int
+            The character's Lodestone ID.
+        """
+        url = f'{self.base_url}/character/{lodestone_id}/update?private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
     
@@ -113,7 +151,8 @@ class Client:
         params = {
             "private_key": self.api_key,
             "language": language,
-            "indexes": ",".join(list(set(indexes)))
+            "indexes": ",".join(list(set(indexes))),
+            "string": name
         }
 
         if len(columns) > 0:
@@ -122,7 +161,7 @@ class Client:
         if string_algo:
             params["string_algo"] = string_algo
 
-        url = f'{self.base_url}/search?string={name}'
+        url = f'{self.base_url}/search'
         async with self.session.get(url, params=params) as response:
             return await self.process_response(response)
 
