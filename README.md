@@ -12,6 +12,27 @@ aiohttp
 pip install xivapi.py
 ```
 
+## Supported API end points
+
+* /character/search
+* /character/id
+* /character/verify
+* /character/update
+* /freecompany/search
+* /freecompany/id
+* /linkshell/search
+* /linkshell/id
+* /pvpteam/search
+* /pvpteam/id
+* /index/search (e.g. recipe, item, action, pvpaction, mount, e.t.c.)
+* /index/id
+* /lore/search
+* /market/item/id?servers=["Phoenix"]
+* /market/item/id?dc=Chaos
+
+## Documentation
+https://xivapi.com/docs/
+
 ## Example
 ```python
 import asyncio
