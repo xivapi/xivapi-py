@@ -145,6 +145,34 @@ class Client:
         url = f'{self.base_url}/linkshell/{lodestone_id}?private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
+
+
+    async def pvpteam_search(self, world, name):
+        """|coro|
+        Search for PvPTeam data directly from the Lodestone.
+        Parameters
+        ------------
+        world: str
+            The world that the PvPTeam is attributed to.
+        name: str
+            The PvPTeam's name.
+        """
+        url = f'{self.base_url}/pvpteam/search?name={name}&server={world}&private_key={self.api_key}'
+        async with self.session.get(url) as response:
+            return await self.process_response(response)
+
+
+    async def pvpteam_by_id(self, lodestone_id: int):
+        """|coro|
+        Request PvPTeam data from XIVAPI.com by Lodestone ID
+        Parameters
+        ------------
+        lodestone_id: int
+            The PvPTeam's Lodestone ID.
+        """
+        url = f'{self.base_url}/pvpteam/{lodestone_id}?private_key={self.api_key}'
+        async with self.session.get(url) as response:
+            return await self.process_response(response)
     
 
     async def index_search(self, name, indexes=[], columns=[], string_algo=None, language="en"):
