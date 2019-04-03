@@ -27,7 +27,7 @@ class Client:
         self.languages = ["en", "fr", "de", "ja"]
 
 
-    async def character_search(self, world, forename, surname):
+    async def character_search(self, world, forename, surname, page=1):
         """|coro|
         Search for character data directly from the Lodestone.
         Parameters
@@ -38,8 +38,10 @@ class Client:
             The character's forename.
         surname: str
             The character's surname.
+        Optional[page: int]
+            The page of results to return. Defaults to 1.
         """
-        url = f'{self.base_url}/character/search?name={forename}%20{surname}&server={world}&private_key={self.api_key}'
+        url = f'{self.base_url}/character/search?name={forename}%20{surname}&server={world}&page={page}&private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
 
@@ -116,7 +118,7 @@ class Client:
             return await self.process_response(response)
     
 
-    async def freecompany_search(self, world, name):
+    async def freecompany_search(self, world, name, page=1):
         """|coro|
         Search for Free Company data directly from the Lodestone.
         Parameters
@@ -125,8 +127,10 @@ class Client:
             The world that the Free Company is attributed to.
         name: str
             The Free Company's name.
+        Optional[page: int]
+            The page of results to return. Defaults to 1.
         """
-        url = f'{self.base_url}/freecompany/search?name={name}&server={world}&private_key={self.api_key}'
+        url = f'{self.base_url}/freecompany/search?name={name}&server={world}&page={page}&private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
 
@@ -144,7 +148,7 @@ class Client:
             return await self.process_response(response)
 
 
-    async def linkshell_search(self, world, name):
+    async def linkshell_search(self, world, name, page=1):
         """|coro|
         Search for Linkshell data directly from the Lodestone.
         Parameters
@@ -153,8 +157,10 @@ class Client:
             The world that the Linkshell is attributed to.
         name: str
             The Linkshell's name.
+        Optional[page: int]
+            The page of results to return. Defaults to 1.
         """
-        url = f'{self.base_url}/linkshell/search?name={name}&server={world}&private_key={self.api_key}'
+        url = f'{self.base_url}/linkshell/search?name={name}&server={world}&page={page}&private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
 
@@ -172,7 +178,7 @@ class Client:
             return await self.process_response(response)
 
 
-    async def pvpteam_search(self, world, name):
+    async def pvpteam_search(self, world, name, page=1):
         """|coro|
         Search for PvPTeam data directly from the Lodestone.
         Parameters
@@ -181,8 +187,10 @@ class Client:
             The world that the PvPTeam is attributed to.
         name: str
             The PvPTeam's name.
+        Optional[page: int]
+            The page of results to return. Defaults to 1.
         """
-        url = f'{self.base_url}/pvpteam/search?name={name}&server={world}&private_key={self.api_key}'
+        url = f'{self.base_url}/pvpteam/search?name={name}&server={world}&page={page}&private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
 
@@ -223,7 +231,7 @@ class Client:
         Optional[sort_field: str]
             The name of the column to sort on.
         Optional[page: int]
-            The page of results to return
+            The page of results to return. Defaults to 1.
         Optional[language: str]
             The two character length language code that indicates the language to return the response in. Defaults to English (en).
             Valid values are "en", "fr", "de" & "ja"
