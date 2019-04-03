@@ -6,6 +6,7 @@ An asynchronous Python client for XIVAPI
 
 ## Requirements
 ```
+python>=3.6.0
 asyncio
 aiohttp
 ```
