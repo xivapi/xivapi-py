@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="xivapi.py",
-    version="0.1.0",
+    version="0.1.1",
     author="Lethys",
     author_email="seraymericbot@gmail.com",
     license="MIT",
