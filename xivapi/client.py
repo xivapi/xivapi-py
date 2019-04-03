@@ -200,7 +200,7 @@ class Client:
             return await self.process_response(response)
     
 
-    async def index_search(self, name, indexes=[], columns=[], string_algo=None, language="en"):
+    async def index_search(self, name, indexes=[], columns=[], filters=[], string_algo=None, string_column=None, sort_field=None, page=1, language="en"):
         """|coro|
         Search for data from on specific indexes.
         Parameters
@@ -213,8 +213,17 @@ class Client:
         Optional[columns: list]
             A named list of columns to return in the response. ID, Name, Icon & ItemDescription will be returned by default.
             e.g. ["ID", "Name", "Icon"]
+        Optional[filters: list]
+            A named list of filters to refine the search
+            e.g. ["LevelItem>35", "LevelItem<=40", "ClassJobCategory.ID=38"]
         Optional[string_algo: str]
             The string algorithm to use for matching results. Defaults to wildcard if None.
+        Optional[string_column: str]
+            The name of the column to search on.
+        Optional[sort_field: str]
+            The name of the column to sort on.
+        Optional[page: int]
+            The page of results to return
         Optional[language: str]
             The two character length language code that indicates the language to return the response in. Defaults to English (en).
             Valid values are "en", "fr", "de" & "ja"
@@ -233,14 +242,24 @@ class Client:
             "private_key": self.api_key,
             "language": language,
             "indexes": ",".join(list(set(indexes))),
-            "string": name
+            "string": name,
+            "page": page
         }
 
         if len(columns) > 0:
             params["columns"] = ",".join(list(set(columns)))
 
+        if len(filters) > 0:
+            params["filters"] = ",".join(filters)
+
         if string_algo:
             params["string_algo"] = string_algo
+
+        if string_column:
+            params["string_column"] = string_column
+
+        if sort_field:
+            params["sort_field"] = sort_field
 
         url = f'{self.base_url}/search'
         async with self.session.get(url, params=params) as response:
