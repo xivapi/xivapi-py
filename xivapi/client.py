@@ -3,7 +3,7 @@ import logging
 
 import aiohttp
 
-from .exceptions import XIVAPIBadRequest, XIVAPIForbidden, XIVAPIInvalidLanguage, XIVAPIErrorOrLodestoneMaintenance, XIVAPIInvalidIndex, XIVAPIInvalidColumns, XIVAPIInvalidWorlds, XIVAPIInvalidDatacenter
+from .exceptions import XIVAPIBadRequest, XIVAPIForbidden, XIVAPINotFound, XIVAPIServiceUnavailable, XIVAPIInvalidLanguage, XIVAPIErrorOrLodestoneMaintenance, XIVAPIInvalidIndex, XIVAPIInvalidColumns, XIVAPIInvalidWorlds, XIVAPIInvalidDatacenter
 from .decorators import timed
 
 __log__ = logging.getLogger(__name__)
@@ -508,9 +508,18 @@ class Client:
         if response.status == 200:
             return await response.json()
 
+        if response.status == 400:
+            raise XIVAPIBadRequest("Request was bad.")
+
         if response.status == 401:
             raise XIVAPIForbidden("Request was refused. Possibly due to an invalid API key.")
 
+        if response.status == 404:
+            raise XIVAPINotFound("Resource not found.")
+
         if response.status == 500:
             raise XIVAPIErrorOrLodestoneMaintenance("An internal server error has occured on XIVAPI. This could be due to the Lodestone undergoing maintenance.")
+
+        if response.status == 503:
+            raise XIVAPIServiceUnavailable("Service is unavailable.")
 

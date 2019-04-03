@@ -12,6 +12,20 @@ class XIVAPIBadRequest(Exception):
     pass
 
 
+class XIVAPINotFound(Exception):
+    """
+    XIVAPI not found error
+    """
+    pass
+
+
+class XIVAPIServiceUnavailable(Exception):
+    """
+    XIVAPI service unavailable error
+    """
+    pass
+
+
 class XIVAPIInvalidLanguage(Exception):
     """
     XIVAPI invalid language error
