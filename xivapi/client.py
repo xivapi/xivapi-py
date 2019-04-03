@@ -44,15 +44,40 @@ class Client:
             return await self.process_response(response)
 
 
-    async def character_by_id(self, lodestone_id: int):
+    async def character_by_id(self, lodestone_id: int, extended=False, include_achievements=False, include_freecompany=False, include_freecompany_members=False, include_pvpteam=False):
         """|coro|
         Request character data from XIVAPI.com
+        Please see XIVAPI documentation for more information about character sync state https://xivapi.com/docs/Character#character
         Parameters
         ------------
         lodestone_id: int
             The character's Lodestone ID.
         """
-        url = f'{self.base_url}/character/{lodestone_id}?private_key={self.api_key}'
+
+        params = {
+            "private_key": self.api_key
+        }
+
+        if extended is True:
+            params["extended"] = 1
+
+        data = []
+        if include_achievements is True:
+            data.append("AC")
+
+        if include_freecompany is True:
+            data.append("FC")
+
+        if include_freecompany_members is True:
+            data.append("FCM")
+
+        if include_pvpteam is True:
+            data.append("PVP")
+
+        if len(data) > 0:
+            params["data"] = ",".join(data)
+
+        url = f'{self.base_url}/character/{lodestone_id}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
 

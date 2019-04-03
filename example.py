@@ -16,6 +16,14 @@ async def fetch_example_results(session):
     )
     print(character)
 
+    # Get a character by Lodestone ID with extended data & include their Free Company information, if it has been synced.
+    character = await client.character_by_id(
+        id=8255311, 
+        extended=True,
+        include_freecompany=True
+    )
+    print(character)
+
     # Search Lodestone for a free company
     freecompany = await client.freecompany_search(
         world="gilgamesh", 
