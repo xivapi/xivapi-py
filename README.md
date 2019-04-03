@@ -31,8 +31,19 @@ pip install xivapi.py
 * /index/search (e.g. recipe, item, action, pvpaction, mount, e.t.c.)
 * /index/id
 * /lore/search
-* /market/item/id?servers=["Phoenix"]
+* /market/item/id?servers=Phoenix,Odin
 * /market/item/id?dc=Chaos
+* /lodestone
+* /lodestone/news
+* /lodestone/notices
+* /lodestone/maintenance
+* /lodestone/updates
+* /lodestone/status
+* /lodestone/worldstatus
+* /lodestone/devblog
+* /lodestone/devposts
+* /lodestone/deepdungeon
+* /lodestone/feasts
 
 ## Documentation
 https://xivapi.com/docs/
@@ -122,6 +133,9 @@ async def fetch_example_results(session):
         datacenter="Chaos", 
         max_history=10
     )
+
+    # Get all categories of posts from the Lodestone (cached evert 15 minutes)
+    lodestone = await client.lodestone_all()
 
     await session.close()
 
