@@ -14,7 +14,6 @@ async def fetch_example_results(session):
         forename="lethys", 
         surname="luculentus"
     )
-    #print(character)
 
     # Get a character by Lodestone ID with extended data & include their Free Company information, if it has been synced.
     character = await client.character_by_id(
@@ -52,6 +51,16 @@ async def fetch_example_results(session):
         content_id=23575, 
         columns=["ID", "Name", "Icon", "ItemUICategory.Name"], 
         language="de"
+    )
+
+
+    # Get non-npc actions matching a given term (Defiance)
+    action = await client.index_search(
+        name="Defiance", 
+        indexes=["Action", "PvPAction", "CraftAction"], 
+        columns=["ID", "Name", "Icon", "Description", "ClassJobCategory.Name", "ClassJobLevel", "ActionCategory.Name"], 
+        filters=["ClassJobLevel>=0", "ClassJobCategory.ID>0"],
+        string_algo="fuzzy"
     )
 
     # Search ingame data for matches against a given query. Includes item, minion, mount & achievement descriptions, quest dialog & more.

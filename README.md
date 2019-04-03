@@ -94,6 +94,16 @@ async def fetch_example_results(session):
         language="de"
     )
 
+
+    # Get non-npc actions matching a given term (Defiance)
+    action = await client.index_search(
+        name="Defiance", 
+        indexes=["Action", "PvPAction", "CraftAction"], 
+        columns=["ID", "Name", "Icon", "Description", "ClassJobCategory.Name", "ClassJobLevel", "ActionCategory.Name"], 
+        filters=["ClassJobLevel>=0", "ClassJobCategory.ID>0"],
+        string_algo="fuzzy"
+    )
+
     # Search ingame data for matches against a given query. Includes item, minion, mount & achievement descriptions, quest dialog & more.
     lore = await client.lore_search(
         query="Shiva",
