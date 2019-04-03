@@ -47,7 +47,7 @@ class XIVAPIInvalidDatacenter(Exception):
     pass
 
 
-class XIVAPIErrorOrMaintenance(Exception):
+class XIVAPIErrorOrLodestoneMaintenance(Exception):
     """
     XIVAPI maintenance error
     """
