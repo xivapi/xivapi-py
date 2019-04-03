@@ -117,6 +117,34 @@ class Client:
         url = f'{self.base_url}/freecompany/{lodestone_id}?private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
+
+
+    async def linkshell_search(self, world, name):
+        """|coro|
+        Search for Linkshell data directly from the Lodestone.
+        Parameters
+        ------------
+        world: str
+            The world that the Linkshell is attributed to.
+        name: str
+            The Linkshell's name.
+        """
+        url = f'{self.base_url}/linkshell/search?name={name}&server={world}&private_key={self.api_key}'
+        async with self.session.get(url) as response:
+            return await self.process_response(response)
+
+
+    async def linkshell_by_id(self, lodestone_id: int):
+        """|coro|
+        Request Linkshell data from XIVAPI.com by Lodestone ID
+        Parameters
+        ------------
+        lodestone_id: int
+            The Linkshell's Lodestone ID.
+        """
+        url = f'{self.base_url}/linkshell/{lodestone_id}?private_key={self.api_key}'
+        async with self.session.get(url) as response:
+            return await self.process_response(response)
     
 
     async def index_search(self, name, indexes=[], columns=[], string_algo=None, language="en"):
