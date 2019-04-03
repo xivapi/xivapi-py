@@ -11,5 +11,6 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Yandawl/xivapi.py",
     packages=setuptools.find_packages(),
-    install_requires=['asyncio', 'aiohttp']
+    install_requires=['asyncio', 'aiohttp'],
+    python_requires='>=3.6.0',
 )
