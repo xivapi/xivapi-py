@@ -195,12 +195,12 @@ class Client:
             return await self.process_response(response)
 
 
-    async def pvpteam_by_id(self, lodestone_id: int):
+    async def pvpteam_by_id(self, lodestone_id):
         """|coro|
         Request PvPTeam data from XIVAPI.com by Lodestone ID
         Parameters
         ------------
-        lodestone_id: int
+        lodestone_id: str
             The PvPTeam's Lodestone ID.
         """
         url = f'{self.base_url}/pvpteam/{lodestone_id}?private_key={self.api_key}'
