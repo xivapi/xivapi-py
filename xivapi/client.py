@@ -4,6 +4,7 @@ import logging
 import aiohttp
 
 from .exceptions import XIVAPIBadRequest, XIVAPIForbidden, XIVAPIInvalidLanguage, XIVAPIErrorOrMaintenance, XIVAPIInvalidIndex, XIVAPIInvalidColumns, XIVAPIInvalidWorlds, XIVAPIInvalidDatacenter
+from .decorators import timed
 
 __log__ = logging.getLogger(__name__)
 
@@ -27,6 +28,7 @@ class Client:
         self.languages = ["en", "fr", "de", "ja"]
 
 
+    @timed
     async def character_search(self, world, forename, surname, page=1):
         """|coro|
         Search for character data directly from the Lodestone.
@@ -46,6 +48,7 @@ class Client:
             return await self.process_response(response)
 
 
+    @timed
     async def character_by_id(self, lodestone_id: int, extended=False, include_achievements=False, include_freecompany=False, include_freecompany_members=False, include_pvpteam=False):
         """|coro|
         Request character data from XIVAPI.com
@@ -84,6 +87,7 @@ class Client:
             return await self.process_response(response)
 
 
+    @timed
     async def character_verify(self, lodestone_id: int, token):
         """|coro|
         Request character data from XIVAPI.com
@@ -105,6 +109,7 @@ class Client:
             return await self.process_response(response)
 
 
+    @timed
     async def character_update(self, lodestone_id: int):
         """|coro|
         Request a character to be updated as soon as possible
@@ -118,6 +123,7 @@ class Client:
             return await self.process_response(response)
     
 
+    @timed
     async def freecompany_search(self, world, name, page=1):
         """|coro|
         Search for Free Company data directly from the Lodestone.
@@ -135,6 +141,7 @@ class Client:
             return await self.process_response(response)
 
 
+    @timed
     async def freecompany_by_id(self, lodestone_id: int):
         """|coro|
         Request Free Company data from XIVAPI.com by Lodestone ID
@@ -148,6 +155,7 @@ class Client:
             return await self.process_response(response)
 
 
+    @timed
     async def linkshell_search(self, world, name, page=1):
         """|coro|
         Search for Linkshell data directly from the Lodestone.
@@ -165,6 +173,7 @@ class Client:
             return await self.process_response(response)
 
 
+    @timed
     async def linkshell_by_id(self, lodestone_id: int):
         """|coro|
         Request Linkshell data from XIVAPI.com by Lodestone ID
@@ -178,6 +187,7 @@ class Client:
             return await self.process_response(response)
 
 
+    @timed
     async def pvpteam_search(self, world, name, page=1):
         """|coro|
         Search for PvPTeam data directly from the Lodestone.
@@ -195,6 +205,7 @@ class Client:
             return await self.process_response(response)
 
 
+    @timed
     async def pvpteam_by_id(self, lodestone_id):
         """|coro|
         Request PvPTeam data from XIVAPI.com by Lodestone ID
@@ -208,6 +219,7 @@ class Client:
             return await self.process_response(response)
     
 
+    @timed
     async def index_search(self, name, indexes=[], columns=[], filters=[], string_algo=None, string_column=None, sort_field=None, page=1, language="en"):
         """|coro|
         Search for data from on specific indexes.
@@ -274,6 +286,7 @@ class Client:
             return await self.process_response(response)
 
 
+    @timed
     async def index_by_id(self, index, content_id: int, columns=[], language="en"):
         """|coro|
         Request data from a given index by ID.
@@ -309,6 +322,7 @@ class Client:
             return await self.process_response(response)
 
 
+    @timed
     async def lore_search(self, query, language="en"):
         """|coro|
         Search cutscene subtitles, quest dialog, item, achievement, mount & minion descriptions and more for any text that matches query.
@@ -331,6 +345,7 @@ class Client:
             return await self.process_response(response)
 
 
+    @timed
     async def market_by_worlds(self, item_id: int, worlds=[], max_history=25):
         """|coro|
         Request current sale listings & sale history for a given item on specified FFXIV worlds.
@@ -359,6 +374,7 @@ class Client:
             return await self.process_response(response)
 
 
+    @timed
     async def market_by_datacenter(self, item_id: int, datacenter, max_history=25):
         """|coro|
         Request current sale listings & sale history for a given item on all worlds on a specified FFXIV datacenter.

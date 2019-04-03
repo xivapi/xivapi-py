@@ -94,7 +94,6 @@ async def fetch_example_results(session):
         language="de"
     )
 
-
     # Get non-npc actions matching a given term (Defiance)
     action = await client.index_search(
         name="Defiance", 
