@@ -14,7 +14,7 @@ async def fetch_example_results(session):
         forename="lethys", 
         surname="luculentus"
     )
-    print(character)
+    #print(character)
 
     # Get a character by Lodestone ID with extended data & include their Free Company information, if it has been synced.
     character = await client.character_by_id(
@@ -22,14 +22,12 @@ async def fetch_example_results(session):
         extended=True,
         include_freecompany=True
     )
-    print(character)
 
     # Search Lodestone for a free company
     freecompany = await client.freecompany_search(
         world="gilgamesh", 
         name="Elysium"
     )
-    print(freecompany)
 
     # Fuzzy search XIVAPI game data for a recipe by name. Results will be in English.
     recipe = await client.index_search(
@@ -38,7 +36,6 @@ async def fetch_example_results(session):
         columns=["ID", "Name", "Icon", "ItemResult.Description"], 
         string_algo="fuzzy"
     )
-    print(recipe)
 
     # Fuzzy search XIVAPI game data for a recipe by name. Results will be in French.
     recipe = await client.index_search(
@@ -48,7 +45,6 @@ async def fetch_example_results(session):
         string_algo="fuzzy", 
         language="fr"
     )
-    print(recipe)
 
     # Get an item by its ID (Omega Rod) and return the data in German
     item = await client.index_by_id(
@@ -57,21 +53,18 @@ async def fetch_example_results(session):
         columns=["ID", "Name", "Icon", "ItemUICategory.Name"], 
         language="de"
     )
-    print(item)
 
     # Search ingame data for matches against a given query. Includes item, minion, mount & achievement descriptions, quest dialog & more.
     lore = await client.lore_search(
         query="Shiva",
         language="fr"
     )
-    print(lore)
 
     # Get current sales & sale history of an item (Shakshouka) on Phoenix & Odin
     market = await client.market_by_worlds(
         item_id=24280, 
         worlds=["Phoenix", "Odin"]
     )
-    print(market)
 
     # Get current sales & sale history of an item (Shakshouka) on all worlds on the Chaos datacenter with a
     # maximum history of 10
@@ -80,7 +73,6 @@ async def fetch_example_results(session):
         datacenter="Chaos", 
         max_history=10
     )
-    print(market)
 
     await session.close()
 

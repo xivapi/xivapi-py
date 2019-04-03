@@ -78,7 +78,7 @@ class Client:
             params["data"] = ",".join(data)
 
         url = f'{self.base_url}/character/{lodestone_id}'
-        async with self.session.get(url) as response:
+        async with self.session.get(url, params=params) as response:
             return await self.process_response(response)
 
 
