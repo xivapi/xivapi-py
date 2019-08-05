@@ -346,62 +346,6 @@ class Client:
 
 
     @timed
-    async def market_by_worlds(self, item_id: int, worlds=[], max_history=25):
-        """|coro|
-        Request current sale listings & sale history for a given item on specified FFXIV worlds.
-        Parameters
-        ------------
-        item_id: int
-            The ID of the sellable item.
-        worlds: list
-            A named list of worlds to return in the response. At least one world is required.
-            e.g. ["Phoenix", "Gilgamesh", "Tonberry"]
-        Optional[max_history: int]
-            The maximum number of history records to return. Default is 25.
-        """
-        worlds_count = len(worlds)
-        if worlds_count < 1 or worlds_count > 15:
-             raise XIVAPIInvalidWorlds("Please provide a list of valid names of FFXIV worlds e.g. [\"Phoenix\", \"Gilgamesh\", \"Tonberry\"]")
-
-        params = {
-            "private_key": self.api_key,
-            "servers": ",".join(list(set(worlds))),
-            "max_history": max_history
-        }
-
-        url = f'{self.base_url}/market/item/{item_id}'
-        async with self.session.get(url, params=params) as response:
-            return await self.process_response(response)
-
-
-    @timed
-    async def market_by_datacenter(self, item_id: int, datacenter, max_history=25):
-        """|coro|
-        Request current sale listings & sale history for a given item on all worlds on a specified FFXIV datacenter.
-        Parameters
-        ------------
-        item_id: int
-            The ID of the sellable item.
-        datacenter: str
-            The name of the FFXIV datacenter from which to request data.
-        Optional[max_history: int]
-            The maximum number of history records to return. Default is 25.
-        """
-        if datacenter == "":
-            raise XIVAPIInvalidDatacenter("Please provide a valid name of an FFXIV Datacenter e.g. \"Chaos\", \"Aether\", \"Elemental\", e.t.c.")
-
-        params = {
-            "private_key": self.api_key,
-            "dc": datacenter,
-            "max_history": max_history
-        }
-
-        url = f'{self.base_url}/market/item/{item_id}'
-        async with self.session.get(url, params=params) as response:
-            return await self.process_response(response)
-
-
-    @timed
     async def lodestone_all(self):
         """|coro|
         Request all categories of Lodestone posts. This function is recommended because it returns a cached (every 15 minutes) collection of
@@ -509,7 +453,7 @@ class Client:
             return await response.json()
 
         if response.status == 400:
-            raise XIVAPIBadRequest("Request was bad.")
+            raise XIVAPIBadRequest("Request was bad. Please check your parameters.")
 
         if response.status == 401:
             raise XIVAPIForbidden("Request was refused. Possibly due to an invalid API key.")
@@ -521,5 +465,5 @@ class Client:
             raise XIVAPIErrorOrLodestoneMaintenance("An internal server error has occured on XIVAPI. This could be due to the Lodestone undergoing maintenance.")
 
         if response.status == 503:
-            raise XIVAPIServiceUnavailable("Service is unavailable.")
+            raise XIVAPIServiceUnavailable("Service is unavailable. This could be because the Lodestone is under maintenance.")
 
