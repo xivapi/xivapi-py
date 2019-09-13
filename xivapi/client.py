@@ -1,10 +1,12 @@
 import asyncio
 import logging
+from typing import List
 
 import aiohttp
 
 from .exceptions import XIVAPIBadRequest, XIVAPIForbidden, XIVAPINotFound, XIVAPIServiceUnavailable, XIVAPIInvalidLanguage, XIVAPIError, XIVAPIInvalidIndex, XIVAPIInvalidColumns, XIVAPIInvalidWorlds, XIVAPIInvalidDatacenter
 from .decorators import timed
+from .models import Filter, Sort
 
 __log__ = logging.getLogger(__name__)
 
@@ -220,7 +222,7 @@ class Client:
     
 
     @timed
-    async def index_search(self, name, indexes=[], columns=[], filters=[], string_algo=None, string_column=None, sort_field=None, page=1, language="en"):
+    async def index_search(self, name, indexes=[], columns=[], filters: List[Filter]=list(), sort: Sort=None, page=1, language="en"):
         """|coro|
         Search for data from on specific indexes.
         Parameters
@@ -234,13 +236,9 @@ class Client:
             A named list of columns to return in the response. ID, Name, Icon & ItemDescription will be returned by default.
             e.g. ["ID", "Name", "Icon"]
         Optional[filters: list]
-            A named list of filters to refine the search
-            e.g. ["LevelItem>35", "LevelItem<=40", "ClassJobCategory.ID=38"]
-        Optional[string_algo: str]
-            The string algorithm to use for matching results. Defaults to wildcard if None.
-        Optional[string_column: str]
-            The name of the column to search on.
-        Optional[sort_field: str]
+            A list of type Filter. Filter must be initialised with Field, Comparison (e.g. lt, lte, gt, gte) and value.
+            e.g. filters = [ Filter("LevelItem", "gte", 100) ]
+        Optional[sort: Sort]
             The name of the column to sort on.
         Optional[page: int]
             The page of results to return. Defaults to 1.
@@ -258,31 +256,77 @@ class Client:
         if len(columns) == 0:
             raise XIVAPIInvalidColumns("Please specify at least one column to return in the resulting data.")
 
-        params = {
-            "private_key": self.api_key,
-            "language": language,
+        body = {
             "indexes": ",".join(list(set(indexes))),
-            "string": name,
-            "page": page
+            "columns": "ID",
+            "body" : {
+                "query": {
+                    "bool": {
+                        "should": [{
+                            "match": {
+                                "NameCombined_en": {
+                                    "query": name,
+                                    "fuzziness": "AUTO",
+                                    "prefix_length": 1,
+                                    "max_expansions": 50
+                                }
+                            }
+                        }, {
+                            "match": {
+                                "NameCombined_de": {
+                                    "query": name,
+                                    "fuzziness": "AUTO",
+                                    "prefix_length": 1,
+                                    "max_expansions": 50
+                                }
+                            }
+                        }, {
+                            "match": {
+                                "NameCombined_fr": {
+                                    "query": name,
+                                    "fuzziness": "AUTO",
+                                    "prefix_length": 1,
+                                    "max_expansions": 50
+                                }
+                            }
+                        }, {
+                            "match": {
+                                "NameCombined_ja": {
+                                    "query": name,
+                                    "fuzziness": "AUTO",
+                                    "prefix_length": 1,
+                                    "max_expansions": 50
+                                }
+                            }
+                        }]
+                    }
+                }
+            }
         }
 
         if len(columns) > 0:
-            params["columns"] = ",".join(list(set(columns)))
+            body["columns"] = ",".join(list(set(columns)))
 
         if len(filters) > 0:
-            params["filters"] = ",".join(filters)
+            filts = []
+            for f in filters:
+                filts.append({
+                    "range": {
+                        f.Field: {
+                            f.Comparison: f.Value
+                        }
+                    }
+                })
+            
+            body["body"]["query"]["bool"]["filter"] = filts
+        
+        if sort:
+            body["body"]["sort"] = [{
+                sort.Field: "asc" if sort.Ascending else "desc"
+            }]
 
-        if string_algo:
-            params["string_algo"] = string_algo
-
-        if string_column:
-            params["string_column"] = string_column
-
-        if sort_field:
-            params["sort_field"] = sort_field
-
-        url = f'{self.base_url}/search'
-        async with self.session.get(url, params=params) as response:
+        url = f'{self.base_url}/search?language={language}&private_key={self.api_key}'
+        async with self.session.post(url, json=body) as response:
             return await self.process_response(response)
 
 
@@ -462,8 +506,7 @@ class Client:
             raise XIVAPINotFound("Resource not found.")
 
         if response.status == 500:
-            raise XIVAPIError("An internal server error has occured on XIVAPI. This could be due to the Lodestone undergoing maintenance.")
+            raise XIVAPIError("An internal server error has occured on XIVAPI.")
 
         if response.status == 503:
             raise XIVAPIServiceUnavailable("Service is unavailable. This could be because the Lodestone is under maintenance.")
-

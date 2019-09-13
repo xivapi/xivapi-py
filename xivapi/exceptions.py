@@ -47,6 +47,13 @@ class XIVAPIInvalidColumns(Exception):
     pass
 
 
+class XIVAPIInvalidFilter(Exception):
+    """
+    XIVAPI invalid filter error
+    """
+    pass
+
+
 class XIVAPIInvalidWorlds(Exception):
     """
     XIVAPI invalid world(s) error

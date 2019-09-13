@@ -121,18 +121,20 @@ async def fetch_example_results(session):
         language="fr"
     )
 
-    # Get current sales & sale history of an item (Shakshouka) on Phoenix & Odin
-    market = await client.market_by_worlds(
-        item_id=24280, 
-        worlds=["Phoenix", "Odin"]
-    )
+    # Search for an item using specific filters
+    filters = [
+        Filter("LevelItem", "gte", 100)
+    ]
 
-    # Get current sales & sale history of an item (Shakshouka) on all worlds on the Chaos datacenter with a
-    # maximum history of 10
-    market = await client.market_by_datacenter(
-        item_id=24280, 
-        datacenter="Chaos", 
-        max_history=10
+    sort = Sort("Name", True)
+
+    item = await client.index_search(
+        name="Omega Rod", 
+        indexes=["Item"], 
+        columns=["ID", "Name", "Icon", "Description", "LevelItem"],
+        filters=filters,
+        sort=sort,
+        language="de"
     )
 
     # Get all categories of posts from the Lodestone (cached evert 15 minutes)
