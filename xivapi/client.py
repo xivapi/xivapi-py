@@ -51,7 +51,7 @@ class Client:
 
 
     @timed
-    async def character_by_id(self, lodestone_id: int, extended=False, include_achievements=False, include_freecompany=False, include_freecompany_members=False, include_pvpteam=False):
+    async def character_by_id(self, lodestone_id: int, extended=False, include_achievements=False, include_freecompany=False, include_freecompany_members=False, include_pvpteam=False, language="en"):
         """|coro|
         Request character data from XIVAPI.com
         Please see XIVAPI documentation for more information about character sync state https://xivapi.com/docs/Character#character
@@ -62,8 +62,12 @@ class Client:
         """
 
         params = {
-            "private_key": self.api_key
+            "private_key": self.api_key,
+            "language": language
         }
+
+        if language.lower() not in self.languages:
+            raise XIVAPIInvalidLanguage(f'"{language}" is not a valid language code for XIVAPI.')
 
         if extended is True:
             params["extended"] = 1
