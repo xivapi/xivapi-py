@@ -32,8 +32,6 @@ pip install xivapi-py
 *   /index/search (e.g. recipe, item, action, pvpaction, mount, e.t.c.)
 *   /index/id
 *   /lore/search
-*   /market/item/id?servers=Phoenix,Odin
-*   /market/item/id?dc=Chaos
 *   /lodestone
 *   /lodestone/news
 *   /lodestone/notices
