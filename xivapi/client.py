@@ -1,10 +1,7 @@
-import asyncio
 import logging
 from typing import List
 
-import aiohttp
-
-from .exceptions import XIVAPIBadRequest, XIVAPIForbidden, XIVAPINotFound, XIVAPIServiceUnavailable, XIVAPIInvalidLanguage, XIVAPIError, XIVAPIInvalidIndex, XIVAPIInvalidColumns, XIVAPIInvalidWorlds, XIVAPIInvalidDatacenter
+from .exceptions import XIVAPIBadRequest, XIVAPIForbidden, XIVAPINotFound, XIVAPIServiceUnavailable, XIVAPIInvalidLanguage, XIVAPIError, XIVAPIInvalidIndex, XIVAPIInvalidColumns, XIVAPIInvalidWorlds
 from .decorators import timed
 from .models import Filter, Sort
 
@@ -242,7 +239,7 @@ class Client:
     
 
     @timed
-    async def index_search(self, name, indexes=[], columns=[], filters: List[Filter]=list(), sort: Sort=None, page=1, language="en"):
+    async def index_search(self, name, indexes=(), columns=(), filters: List[Filter]=(), sort: Sort=None, page=1, language="en"):
         """|coro|
         Search for data from on specific indexes.
         Parameters
@@ -339,7 +336,7 @@ class Client:
                 })
             
             body["body"]["query"]["bool"]["filter"] = filts
-        
+
         if sort:
             body["body"]["sort"] = [{
                 sort.Field: "asc" if sort.Ascending else "desc"
@@ -351,7 +348,7 @@ class Client:
 
 
     @timed
-    async def index_by_id(self, index, content_id: int, columns=[], language="en"):
+    async def index_by_id(self, index, content_id: int, columns=(), language="en"):
         """|coro|
         Request data from a given index by ID.
         Parameters

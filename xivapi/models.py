@@ -1,6 +1,6 @@
 from .exceptions import XIVAPIInvalidFilter
 
-class Filter: 
+class Filter:
     """
     Model class for DQL filters
     """
@@ -18,7 +18,7 @@ class Filter:
         self.Value = value
 
 
-class Sort: 
+class Sort:
     """
     Model class for sort field
     """

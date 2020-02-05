@@ -6,45 +6,45 @@ An asynchronous Python client for XIVAPI
 [![Python 3.6](https://img.shields.io/badge/python-3.6-green.svg)](https://www.python.org/downloads/release/python-360/)
 
 ## Requirements
-```
+```python
 python>=3.6.0
 asyncio
 aiohttp
 ```
 
 ## Installation
-```
+```python
 pip install xivapi-py
 ```
 
 ## Supported API end points
 
-* /character/search
-* /character/id
-* /character/verify
-* /character/update
-* /freecompany/search
-* /freecompany/id
-* /linkshell/search
-* /linkshell/id
-* /pvpteam/search
-* /pvpteam/id
-* /index/search (e.g. recipe, item, action, pvpaction, mount, e.t.c.)
-* /index/id
-* /lore/search
-* /market/item/id?servers=Phoenix,Odin
-* /market/item/id?dc=Chaos
-* /lodestone
-* /lodestone/news
-* /lodestone/notices
-* /lodestone/maintenance
-* /lodestone/updates
-* /lodestone/status
-* /lodestone/worldstatus
-* /lodestone/devblog
-* /lodestone/devposts
-* /lodestone/deepdungeon
-* /lodestone/feasts
+*   /character/search
+*   /character/id
+*   /character/verify
+*   /character/update
+*   /freecompany/search
+*   /freecompany/id
+*   /linkshell/search
+*   /linkshell/id
+*   /pvpteam/search
+*   /pvpteam/id
+*   /index/search (e.g. recipe, item, action, pvpaction, mount, e.t.c.)
+*   /index/id
+*   /lore/search
+*   /market/item/id?servers=Phoenix,Odin
+*   /market/item/id?dc=Chaos
+*   /lodestone
+*   /lodestone/news
+*   /lodestone/notices
+*   /lodestone/maintenance
+*   /lodestone/updates
+*   /lodestone/status
+*   /lodestone/worldstatus
+*   /lodestone/devblog
+*   /lodestone/devposts
+*   /lodestone/deepdungeon
+*   /lodestone/feasts
 
 ## Documentation
 https://xivapi.com/docs/
