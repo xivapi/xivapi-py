@@ -1,8 +1,8 @@
-# xivapi.py
+# xivapi-py
 An asynchronous Python client for XIVAPI
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/59d6a0b1c47d44f99e11af7f34bf251b)](https://app.codacy.com/app/Yandawl/xivapi.py?utm_source=github.com&utm_medium=referral&utm_content=xivapi/xivapi.py&utm_campaign=Badge_Grade_Dashboard)
-[![PyPI version](https://badge.fury.io/py/xivapi.py.svg)](https://badge.fury.io/py/xivapi.py)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/741f410aefad4fa69cc6925ff5d83b4b)](https://www.codacy.com/manual/Yandawl/xivapi-py?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=xivapi/xivapi-py&amp;utm_campaign=Badge_Grade)
+[![PyPI version](https://badge.fury.io/py/xivapi-py.svg)](https://badge.fury.io/py/xivapi-py)
 [![Python 3.6](https://img.shields.io/badge/python-3.6-green.svg)](https://www.python.org/downloads/release/python-360/)
 
 ## Requirements
@@ -14,7 +14,7 @@ aiohttp
 
 ## Installation
 ```
-pip install xivapi.py
+pip install xivapi-py
 ```
 
 ## Supported API end points
@@ -63,9 +63,9 @@ async def fetch_example_results(session):
 
     # Search Lodestone for a character
     character = await client.character_search(
-        world="phoenix", 
+        world="odin", 
         forename="lethys", 
-        surname="luculentus"
+        surname="lightpaw"
     )
 
     # Get a character by Lodestone ID with extended data & include their Free Company information, if it has been synced.
