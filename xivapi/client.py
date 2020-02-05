@@ -334,7 +334,7 @@ class Client:
                         }
                     }
                 })
-            
+
             body["body"]["query"]["bool"]["filter"] = filts
 
         if sort:

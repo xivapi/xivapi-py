@@ -47,7 +47,7 @@ pip install xivapi-py
 *   /lodestone/feasts
 
 ## Documentation
-https://xivapi.com/docs/
+<https://xivapi.com/docs/>
 
 ## Example
 ```python
