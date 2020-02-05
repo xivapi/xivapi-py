@@ -124,7 +124,7 @@ class Client:
         url = f'{self.base_url}/character/{lodestone_id}/update?private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
-    
+
 
     @timed
     async def freecompany_search(self, world, name, page=1):
@@ -236,7 +236,7 @@ class Client:
         url = f'{self.base_url}/pvpteam/{lodestone_id}?private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
-    
+
 
     @timed
     async def index_search(self, name, indexes=(), columns=(), filters: List[Filter]=(), sort: Sort=None, page=1, language="en"):
