@@ -1,4 +1,3 @@
-import os
 import pathlib
 import re
 
@@ -13,7 +12,7 @@ with open(ROOT / 'requirements.txt', encoding='utf-8') as f:
 with open(ROOT / 'README.md', encoding='utf-8') as f:
     README = f.read()
 
-with open(ROOT / 'xivapi-py' / '__init__.py', encoding='utf-8') as f:
+with open(ROOT / 'xivapi' / '__init__.py', encoding='utf-8') as f:
     VERSION = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
 
 setuptools.setup(
