@@ -56,6 +56,7 @@ import logging
 
 import aiohttp
 import xivapi
+from xivapi.models import Filter, Sort
 
 
 async def fetch_example_results(session):
@@ -85,8 +86,7 @@ async def fetch_example_results(session):
     recipe = await client.index_search(
         name="Crimson Cider", 
         indexes=["Recipe"], 
-        columns=["ID", "Name", "Icon", "ItemResult.Description"], 
-        string_algo="fuzzy"
+        columns=["ID", "Name", "Icon", "ItemResult.Description"]
     )
 
     # Fuzzy search XIVAPI game data for a recipe by name. Results will be in French.
@@ -94,7 +94,6 @@ async def fetch_example_results(session):
         name="Cidre carmin", 
         indexes=["Recipe"], 
         columns=["ID", "Name", "Icon", "ItemResult.Description"], 
-        string_algo="fuzzy", 
         language="fr"
     )
 
@@ -106,13 +105,17 @@ async def fetch_example_results(session):
         language="de"
     )
 
+    filters = [
+        Filter("ClassJobLevel", "gte", 0),
+        Filter("ClassJobCategory", "gt", 0),
+    ]
+
     # Get non-npc actions matching a given term (Defiance)
     action = await client.index_search(
         name="Defiance", 
         indexes=["Action", "PvPAction", "CraftAction"], 
         columns=["ID", "Name", "Icon", "Description", "ClassJobCategory.Name", "ClassJobLevel", "ActionCategory.Name"], 
-        filters=["ClassJobLevel>=0", "ClassJobCategory.ID>0"],
-        string_algo="fuzzy"
+        filters=filters
     )
 
     # Search ingame data for matches against a given query. Includes item, minion, mount & achievement descriptions, quest dialog & more.
@@ -126,7 +129,7 @@ async def fetch_example_results(session):
         Filter("LevelItem", "gte", 100)
     ]
 
-    sort = Sort("Name", True)
+    sort = Sort("LevelItem", True)
 
     item = await client.index_search(
         name="Omega Rod", 
@@ -149,4 +152,5 @@ if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     session = aiohttp.ClientSession(loop=loop)
     loop.run_until_complete(fetch_example_results(session))
+
 ```
