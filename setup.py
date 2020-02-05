@@ -1,16 +1,43 @@
+import os
+import pathlib
+import re
+
 import setuptools
 
+
+ROOT = pathlib.Path(__file__).parent
+
+with open(ROOT / 'requirements.txt', encoding='utf-8') as f:
+    REQUIREMENTS = f.readlines()
+
+with open(ROOT / 'README.md', encoding='utf-8') as f:
+    README = f.read()
+
+with open(ROOT / 'xivapi-py' / '__init__.py', encoding='utf-8') as f:
+    VERSION = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
+
 setuptools.setup(
-    name="xivapi-py",
-    version="0.1.1",
-    author="Lethys",
-    author_email="seraymericbot@gmail.com",
-    license="MIT",
-    description="An asynchronous Python client for XIVAPI",
+    name='xivapi-py',
+    author='Lethys',
+    url='https://github.com/xivapi/xivapi-py',
+    version=VERSION,
+    packages=['xivapi-py'],
+    license='MIT',
+    description='An asynchronous Python client for XIVAPI',
+    long_description=README,
     keywords='ffxiv xivapi',
-    long_description_content_type="text/markdown",
-    url="https://github.com/Yandawl/xivapi-py",
-    packages=setuptools.find_packages(),
-    install_requires=['asyncio', 'aiohttp'],
-    python_requires='>=3.6.0',
+    include_package_data=True,
+    install_requires=REQUIREMENTS,
+    classifiers=[
+        'License :: OSI Approved :: MIT License',
+        'Intended Audience :: Developers',
+        'Natural Language :: English',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Topic :: Internet',
+        'Topic :: Software Development :: Libraries',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Topic :: Utilities',
+    ]
 )
