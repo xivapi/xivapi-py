@@ -23,6 +23,7 @@ setuptools.setup(
     license='MIT',
     description='An asynchronous Python client for XIVAPI',
     long_description=README,
+    long_description_content_type="text/markdown",
     keywords='ffxiv xivapi',
     include_package_data=True,
     install_requires=REQUIREMENTS,
