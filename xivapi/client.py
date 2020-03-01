@@ -8,7 +8,7 @@ from .models import Filter, Sort
 __log__ = logging.getLogger(__name__)
 
 
-class Client:
+class XIVAPIClient:
     """
     Asynchronous client for accessing XIVAPI's endpoints.
     Parameters

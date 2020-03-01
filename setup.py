@@ -1,23 +1,20 @@
-import pathlib
 import re
 
 import setuptools
 
-
-ROOT = pathlib.Path(__file__).parent
-
-with open(ROOT / 'requirements.txt', encoding='utf-8') as f:
+with open('requirements.txt') as f:
     REQUIREMENTS = f.readlines()
 
-with open(ROOT / 'README.md', encoding='utf-8') as f:
+with open('README.md') as f:
     README = f.read()
 
-with open(ROOT / 'xivapi' / '__init__.py', encoding='utf-8') as f:
+with open('xivapi/__init__.py') as f:
     VERSION = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
 
 setuptools.setup(
     name='xivapi-py',
     author='Lethys',
+    author_email='seraymericbot@gmail.com',
     url='https://github.com/xivapi/xivapi-py',
     version=VERSION,
     license='MIT',

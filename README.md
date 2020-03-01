@@ -58,7 +58,7 @@ from xivapi.models import Filter, Sort
 
 
 async def fetch_example_results(session):
-    client = xivapi.Client(session=session, api_key="your_key_here")
+    client = xivapi.XIVAPIClient(session=session, api_key="your_key_here")
 
     # Search Lodestone for a character
     character = await client.character_search(

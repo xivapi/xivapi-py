@@ -2,7 +2,7 @@ __title__ = 'xivapi-py'
 __author__ = 'Lethys'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2019 (c) Lethys'
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 
-from .client import Client
+from .client import XIVAPIClient
 from .exceptions import *
