@@ -1,4 +1,4 @@
-__title__ = 'xivapi'
+__title__ = 'pyxivapi'
 __author__ = 'Lethys'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2019 (c) Lethys'
