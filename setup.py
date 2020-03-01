@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
 with open('README.md') as f:
     README = f.read()
 
-with open('xivapi/__init__.py') as f:
+with open('pyxivapi/__init__.py') as f:
     VERSION = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
 
 setuptools.setup(
