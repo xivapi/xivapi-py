@@ -12,12 +12,12 @@ with open('xivapi/__init__.py') as f:
     VERSION = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
 
 setuptools.setup(
-    name='xivapi-py',
+    name='xivapi',
     author='Lethys',
     author_email='seraymericbot@gmail.com',
     url='https://github.com/xivapi/xivapi-py',
     version=VERSION,
-    packages=['xivapi-py'],
+    packages=['xivapi'],
     license='MIT',
     description='An asynchronous Python client for XIVAPI',
     long_description=README,

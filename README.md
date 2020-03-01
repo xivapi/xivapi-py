@@ -1,8 +1,8 @@
-# xivapi-py
+# xivapi
 An asynchronous Python client for XIVAPI
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/741f410aefad4fa69cc6925ff5d83b4b)](https://www.codacy.com/manual/Yandawl/xivapi-py?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=xivapi/xivapi-py&amp;utm_campaign=Badge_Grade)
-[![PyPI version](https://badge.fury.io/py/xivapi-py.svg)](https://badge.fury.io/py/xivapi-py)
+[![PyPI version](https://badge.fury.io/py/xivapi.svg)](https://badge.fury.io/py/xivapi)
 [![Python 3.6](https://img.shields.io/badge/python-3.6-green.svg)](https://www.python.org/downloads/release/python-360/)
 
 ## Requirements
@@ -14,7 +14,7 @@ aiohttp
 
 ## Installation
 ```python
-pip install xivapi-py
+pip install xivapi
 ```
 
 ## Supported API end points
