@@ -17,6 +17,7 @@ setuptools.setup(
     author_email='seraymericbot@gmail.com',
     url='https://github.com/xivapi/xivapi-py',
     version=VERSION,
+    packages=['xivapi-py'],
     license='MIT',
     description='An asynchronous Python client for XIVAPI',
     long_description=README,
