@@ -73,3 +73,10 @@ class XIVAPIError(Exception):
     XIVAPI error
     """
     pass
+
+
+class XIVAPIInvalidAlgo(Exception):
+    """
+    Invalid String Algo
+    """
+    pass

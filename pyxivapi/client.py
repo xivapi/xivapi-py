@@ -1,7 +1,8 @@
 import logging
 from typing import List
 
-from .exceptions import XIVAPIBadRequest, XIVAPIForbidden, XIVAPINotFound, XIVAPIServiceUnavailable, XIVAPIInvalidLanguage, XIVAPIError, XIVAPIInvalidIndex, XIVAPIInvalidColumns
+from .exceptions import XIVAPIBadRequest, XIVAPIForbidden, XIVAPINotFound, XIVAPIServiceUnavailable, \
+    XIVAPIInvalidLanguage, XIVAPIError, XIVAPIInvalidIndex, XIVAPIInvalidColumns, XIVAPIInvalidAlgo
 from .decorators import timed
 from .models import Filter, Sort
 
@@ -25,7 +26,10 @@ class XIVAPIClient:
 
         self.base_url = "https://xivapi.com"
         self.languages = ["en", "fr", "de", "ja"]
-
+        self.string_algos = [
+            "custom", "wildcard", "wildcard_plus", "fuzzy", "term", "prefix", "match", "match_phrase",
+            "match_phrase_prefix", "multi_match", "query_string"
+        ]
 
     @timed
     async def character_search(self, world, forename, surname, page=1):
@@ -242,7 +246,7 @@ class XIVAPIClient:
 
 
     @timed
-    async def index_search(self, name, indexes=(), columns=(), filters: List[Filter]=(), sort: Sort=None, page=1, language="en"):
+    async def index_search(self, name, indexes=(), columns=(), filters: List[Filter]=(), sort: Sort=None, page=1, language="en", string_algo="match"):
         """|coro|
         Search for data from on specific indexes.
         Parameters
@@ -265,6 +269,10 @@ class XIVAPIClient:
         Optional[language: str]
             The two character length language code that indicates the language to return the response in. Defaults to English (en).
             Valid values are "en", "fr", "de" & "ja"
+        Optional[string_algo: str]
+            The search algorithm to use for string matching (default = "match")
+            Valid values are "custom", "wildcard", "wildcard_plus", "fuzzy", "term", "prefix", "match", "match_phrase",
+            "match_phrase_prefix", "multi_match", "query_string"
         """
 
         if len(indexes) == 0:
@@ -276,14 +284,17 @@ class XIVAPIClient:
         if len(columns) == 0:
             raise XIVAPIInvalidColumns("Please specify at least one column to return in the resulting data.")
 
+        if string_algo not in self.string_algos:
+            raise XIVAPIInvalidAlgo(f'"{string_algo}" is not a supported string_algo for XIVAPI')
+
         body = {
             "indexes": ",".join(list(set(indexes))),
             "columns": "ID",
-            "body" : {
+            "body": {
                 "query": {
                     "bool": {
                         "should": [{
-                            "match": {
+                            string_algo: {
                                 "NameCombined_en": {
                                     "query": name,
                                     "fuzziness": "AUTO",
@@ -292,7 +303,7 @@ class XIVAPIClient:
                                 }
                             }
                         }, {
-                            "match": {
+                            string_algo: {
                                 "NameCombined_de": {
                                     "query": name,
                                     "fuzziness": "AUTO",
@@ -301,7 +312,7 @@ class XIVAPIClient:
                                 }
                             }
                         }, {
-                            "match": {
+                            string_algo: {
                                 "NameCombined_fr": {
                                     "query": name,
                                     "fuzziness": "AUTO",
@@ -310,7 +321,7 @@ class XIVAPIClient:
                                 }
                             }
                         }, {
-                            "match": {
+                            string_algo: {
                                 "NameCombined_ja": {
                                     "query": name,
                                     "fuzziness": "AUTO",
@@ -384,7 +395,6 @@ class XIVAPIClient:
         url = f'{self.base_url}/{index}/{content_id}'
         async with self.session.get(url, params=params) as response:
             return await self.process_response(response)
-
 
     @timed
     async def lore_search(self, query, language="en"):
