@@ -1,5 +1,7 @@
 import logging
-from typing import List
+from typing import List, Optional
+
+from aiohttp import ClientSession
 
 from .exceptions import XIVAPIBadRequest, XIVAPIForbidden, XIVAPINotFound, XIVAPIServiceUnavailable, XIVAPIInvalidLanguage, XIVAPIError, XIVAPIInvalidIndex, XIVAPIInvalidColumns
 from .decorators import timed
@@ -13,19 +15,23 @@ class XIVAPIClient:
     Asynchronous client for accessing XIVAPI's endpoints.
     Parameters
     ------------
-    session: aiohttp.ClientSession()
-        The aiohttp session used with which to make http requests
     api_key: str
         The API key used for identifying your application with XIVAPI.com.
+    session: Optional[ClientSession]
+        Optionally include your aiohttp session
     """
+    base_url = "https://xivapi.com"
+    languages = ["en", "fr", "de", "ja"]
 
-    def __init__(self, session, api_key):
-        self.session = session
+    def __init__(self, api_key: str, session: Optional[ClientSession] = None) -> None:
         self.api_key = api_key
+        self._session = session
 
-        self.base_url = "https://xivapi.com"
-        self.languages = ["en", "fr", "de", "ja"]
-
+    @property
+    def session(self) -> ClientSession:
+        if self._session is None or self._session.closed:
+            self._session = ClientSession()
+        return self._session
 
     @timed
     async def character_search(self, world, forename, surname, page=1):
