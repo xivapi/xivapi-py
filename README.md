@@ -57,7 +57,7 @@ import pyxivapi
 from pyxivapi.models import Filter, Sort
 
 
-async def fetch_example_results(session):
+async def fetch_example_results():
     client = pyxivapi.XIVAPIClient(api_key="your_key_here")
 
     # Search Lodestone for a character
@@ -113,7 +113,8 @@ async def fetch_example_results(session):
         name="Defiance", 
         indexes=["Action", "PvPAction", "CraftAction"], 
         columns=["ID", "Name", "Icon", "Description", "ClassJobCategory.Name", "ClassJobLevel", "ActionCategory.Name"], 
-        filters=filters
+        filters=filters,
+        string_algo="match"
     )
 
     # Search ingame data for matches against a given query. Includes item, minion, mount & achievement descriptions, quest dialog & more.
@@ -141,7 +142,7 @@ async def fetch_example_results(session):
     # Get all categories of posts from the Lodestone (cached evert 15 minutes)
     lodestone = await client.lodestone_all()
 
-    await session.close()
+    await client.session.close()
 
 
 if __name__ == '__main__':
