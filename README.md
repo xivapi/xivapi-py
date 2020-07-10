@@ -58,7 +58,7 @@ from pyxivapi.models import Filter, Sort
 
 
 async def fetch_example_results(session):
-    client = pyxivapi.XIVAPIClient(session=session, api_key="your_key_here")
+    client = pyxivapi.XIVAPIClient(api_key="your_key_here")
 
     # Search Lodestone for a character
     character = await client.character_search(
@@ -146,9 +146,6 @@ async def fetch_example_results(session):
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format='%(message)s', datefmt='%H:%M')
-
-    loop = asyncio.get_event_loop()
-    session = aiohttp.ClientSession(loop=loop)
-    loop.run_until_complete(fetch_example_results(session))
+    loop.run_until_complete(fetch_example_results())
 
 ```
