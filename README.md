@@ -147,6 +147,7 @@ async def fetch_example_results():
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format='%(message)s', datefmt='%H:%M')
+    loop = asyncio.get_event_loop()
     loop.run_until_complete(fetch_example_results())
 
 ```
