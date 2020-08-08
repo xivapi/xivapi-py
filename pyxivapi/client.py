@@ -64,7 +64,7 @@ class XIVAPIClient:
 
 
     @timed
-    async def character_by_id(self, lodestone_id: int, extended=False, include_achievements=False, include_classjobs=False, include_freecompany=False, include_freecompany_members=False, include_pvpteam=False, language="en"):
+    async def character_by_id(self, lodestone_id: int, extended=False, include_achievements=False, include_minions_mounts=False, include_classjobs=False, include_freecompany=False, include_freecompany_members=False, include_pvpteam=False, language="en"):
         """|coro|
         Request character data from XIVAPI.com
         Please see XIVAPI documentation for more information about character sync state https://xivapi.com/docs/Character#character
@@ -88,6 +88,9 @@ class XIVAPIClient:
         data = []
         if include_achievements is True:
             data.append("AC")
+
+        if include_minions_mounts is True:
+            data.append("MIMO")
 
         if include_classjobs is True:
             data.append("CJ")
