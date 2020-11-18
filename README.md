@@ -30,17 +30,7 @@ pip install pyxivapi
 *   /index/search (e.g. recipe, item, action, pvpaction, mount, e.t.c.)
 *   /index/id
 *   /lore/search
-*   /lodestone
-*   /lodestone/news
-*   /lodestone/notices
-*   /lodestone/maintenance
-*   /lodestone/updates
-*   /lodestone/status
 *   /lodestone/worldstatus
-*   /lodestone/devblog
-*   /lodestone/devposts
-*   /lodestone/deepdungeon
-*   /lodestone/feasts
 
 ## Documentation
 <https://xivapi.com/docs/>
@@ -136,9 +126,6 @@ async def fetch_example_results():
         sort=sort,
         language="de"
     )
-
-    # Get all categories of posts from the Lodestone (cached evert 15 minutes)
-    lodestone = await client.lodestone_all()
 
     await client.session.close()
 
