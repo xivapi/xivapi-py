@@ -390,93 +390,11 @@ class XIVAPIClient:
             return await self.process_response(response)
 
     @timed
-    async def lodestone_all(self):
-        """|coro|
-        Request all categories of Lodestone posts. This function is recommended because it returns a cached (every 15 minutes) collection of
-        information and will return much quicker.
-        """
-        url = f'{self.base_url}/lodestone?private_key={self.api_key}'
-        async with self.session.get(url) as response:
-            return await self.process_response(response)
-
-    @timed
-    async def lodestone_news(self):
-        """|coro|
-        Request posts under the topics Lodestone category.
-        """
-        url = f'{self.base_url}/lodestone/news?private_key={self.api_key}'
-        async with self.session.get(url) as response:
-            return await self.process_response(response)
-
-    @timed
-    async def lodestone_notices(self):
-        """|coro|
-        Request posts under the notices Lodestone category.
-        """
-        url = f'{self.base_url}/lodestone/notices?private_key={self.api_key}'
-        async with self.session.get(url) as response:
-            return await self.process_response(response)
-
-    @timed
-    async def lodestone_maintenance(self):
-        """|coro|
-        Request posts under the maintenance Lodestone category.
-        """
-        url = f'{self.base_url}/lodestone/maintenance?private_key={self.api_key}'
-        async with self.session.get(url) as response:
-            return await self.process_response(response)
-
-    @timed
-    async def lodestone_updates(self):
-        """|coro|
-        Request posts under the updates Lodestone category.
-        """
-        url = f'{self.base_url}/lodestone/updates?private_key={self.api_key}'
-        async with self.session.get(url) as response:
-            return await self.process_response(response)
-
-    @timed
     async def lodestone_worldstatus(self):
         """|coro|
         Request world status post from the Lodestone.
         """
         url = f'{self.base_url}/lodestone/worldstatus?private_key={self.api_key}'
-        async with self.session.get(url) as response:
-            return await self.process_response(response)
-
-    @timed
-    async def lodestone_devblog(self):
-        """|coro|
-        Request posts under the developer blog Lodestone category.
-        """
-        url = f'{self.base_url}/lodestone/devblog?private_key={self.api_key}'
-        async with self.session.get(url) as response:
-            return await self.process_response(response)
-
-    @timed
-    async def lodestone_devposts(self):
-        """|coro|
-        Request developer posrs from the official FFXIV forums.
-        """
-        url = f'{self.base_url}/lodestone/devposts?private_key={self.api_key}'
-        async with self.session.get(url) as response:
-            return await self.process_response(response)
-
-    @timed
-    async def lodestone_deepdungeon(self):
-        """|coro|
-        Request Deep Dungeon post from the Lodestone.
-        """
-        url = f'{self.base_url}/lodestone/deepdungeon?private_key={self.api_key}'
-        async with self.session.get(url) as response:
-            return await self.process_response(response)
-
-    @timed
-    async def lodestone_feasts(self):
-        """|coro|
-        Request Feast post from the Lodestone.
-        """
-        url = f'{self.base_url}/lodestone/feasts?private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
 
