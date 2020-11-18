@@ -35,13 +35,11 @@ class XIVAPIClient:
             "match_phrase_prefix", "multi_match", "query_string"
         ]
 
-
     @property
     def session(self) -> ClientSession:
         if self._session is None or self._session.closed:
             self._session = ClientSession()
         return self._session
-
 
     @timed
     async def character_search(self, world, forename, surname, page=1):
@@ -61,7 +59,6 @@ class XIVAPIClient:
         url = f'{self.base_url}/character/search?name={forename}%20{surname}&server={world}&page={page}&private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
-
 
     @timed
     async def character_by_id(self, lodestone_id: int, extended=False, include_achievements=False, include_minions_mounts=False, include_classjobs=False, include_freecompany=False, include_freecompany_members=False, include_pvpteam=False, language="en"):
@@ -111,43 +108,6 @@ class XIVAPIClient:
         async with self.session.get(url, params=params) as response:
             return await self.process_response(response)
 
-
-    @timed
-    async def character_verify(self, lodestone_id: int, token):
-        """|coro|
-        Request character data from XIVAPI.com
-        Parameters
-        ------------
-        lodestone_id: int
-            The character's Lodestone ID.
-        token: str
-            The string token on a character's Lodestone profile to test against
-        """
-
-        params = {
-            "private_key": self.api_key,
-            "token": token
-        }
-
-        url = f'{self.base_url}/character/{lodestone_id}/verification'
-        async with self.session.get(url, params=params) as response:
-            return await self.process_response(response)
-
-
-    @timed
-    async def character_update(self, lodestone_id: int):
-        """|coro|
-        Request a character to be updated as soon as possible
-        Parameters
-        ------------
-        lodestone_id: int
-            The character's Lodestone ID.
-        """
-        url = f'{self.base_url}/character/{lodestone_id}/update?private_key={self.api_key}'
-        async with self.session.get(url) as response:
-            return await self.process_response(response)
-
-
     @timed
     async def freecompany_search(self, world, name, page=1):
         """|coro|
@@ -164,7 +124,6 @@ class XIVAPIClient:
         url = f'{self.base_url}/freecompany/search?name={name}&server={world}&page={page}&private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
-
 
     @timed
     async def freecompany_by_id(self, lodestone_id: int, extended=False, include_freecompany_members=False):
@@ -195,7 +154,6 @@ class XIVAPIClient:
         async with self.session.get(url, params=params) as response:
             return await self.process_response(response)
 
-
     @timed
     async def linkshell_search(self, world, name, page=1):
         """|coro|
@@ -213,7 +171,6 @@ class XIVAPIClient:
         async with self.session.get(url) as response:
             return await self.process_response(response)
 
-
     @timed
     async def linkshell_by_id(self, lodestone_id: int):
         """|coro|
@@ -226,7 +183,6 @@ class XIVAPIClient:
         url = f'{self.base_url}/linkshell/{lodestone_id}?private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
-
 
     @timed
     async def pvpteam_search(self, world, name, page=1):
@@ -245,7 +201,6 @@ class XIVAPIClient:
         async with self.session.get(url) as response:
             return await self.process_response(response)
 
-
     @timed
     async def pvpteam_by_id(self, lodestone_id):
         """|coro|
@@ -259,9 +214,8 @@ class XIVAPIClient:
         async with self.session.get(url) as response:
             return await self.process_response(response)
 
-
     @timed
-    async def index_search(self, name, indexes=(), columns=(), filters: List[Filter]=(), sort: Sort=None, page=1, language="en", string_algo="match"):
+    async def index_search(self, name, indexes=(), columns=(), filters: List[Filter] = (), sort: Sort = None, page=1, language="en", string_algo="match"):
         """|coro|
         Search for data from on specific indexes.
         Parameters
@@ -375,7 +329,6 @@ class XIVAPIClient:
         async with self.session.post(url, json=body) as response:
             return await self.process_response(response)
 
-
     @timed
     async def index_by_id(self, index, content_id: int, columns=(), language="en"):
         """|coro|
@@ -433,7 +386,6 @@ class XIVAPIClient:
         async with self.session.get(url, params=params) as response:
             return await self.process_response(response)
 
-
     @timed
     async def lodestone_all(self):
         """|coro|
@@ -444,7 +396,6 @@ class XIVAPIClient:
         async with self.session.get(url) as response:
             return await self.process_response(response)
 
-
     @timed
     async def lodestone_news(self):
         """|coro|
@@ -453,7 +404,6 @@ class XIVAPIClient:
         url = f'{self.base_url}/lodestone/news?private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
-
 
     @timed
     async def lodestone_notices(self):
@@ -464,7 +414,6 @@ class XIVAPIClient:
         async with self.session.get(url) as response:
             return await self.process_response(response)
 
-
     @timed
     async def lodestone_maintenance(self):
         """|coro|
@@ -473,7 +422,6 @@ class XIVAPIClient:
         url = f'{self.base_url}/lodestone/maintenance?private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
-
 
     @timed
     async def lodestone_updates(self):
@@ -484,7 +432,6 @@ class XIVAPIClient:
         async with self.session.get(url) as response:
             return await self.process_response(response)
 
-
     @timed
     async def lodestone_worldstatus(self):
         """|coro|
@@ -493,7 +440,6 @@ class XIVAPIClient:
         url = f'{self.base_url}/lodestone/worldstatus?private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
-
 
     @timed
     async def lodestone_devblog(self):
@@ -504,7 +450,6 @@ class XIVAPIClient:
         async with self.session.get(url) as response:
             return await self.process_response(response)
 
-
     @timed
     async def lodestone_devposts(self):
         """|coro|
@@ -513,7 +458,6 @@ class XIVAPIClient:
         url = f'{self.base_url}/lodestone/devposts?private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
-
 
     @timed
     async def lodestone_deepdungeon(self):
@@ -524,7 +468,6 @@ class XIVAPIClient:
         async with self.session.get(url) as response:
             return await self.process_response(response)
 
-
     @timed
     async def lodestone_feasts(self):
         """|coro|
@@ -533,7 +476,6 @@ class XIVAPIClient:
         url = f'{self.base_url}/lodestone/feasts?private_key={self.api_key}'
         async with self.session.get(url) as response:
             return await self.process_response(response)
-
 
     async def process_response(self, response):
         __log__.info(f'{response.status} from {response.url}')
