@@ -1,5 +1,6 @@
 from .exceptions import XIVAPIInvalidFilter
 
+
 class Filter:
     """
     Model class for DQL filters

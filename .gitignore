@@ -107,3 +107,5 @@ example.py
 
 # pycharm
 .idea
+
+.vscode

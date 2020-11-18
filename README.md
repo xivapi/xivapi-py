@@ -21,8 +21,6 @@ pip install pyxivapi
 
 *   /character/search
 *   /character/id
-*   /character/verify
-*   /character/update
 *   /freecompany/search
 *   /freecompany/id
 *   /linkshell/search
