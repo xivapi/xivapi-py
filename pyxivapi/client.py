@@ -218,7 +218,7 @@ class XIVAPIClient:
             return await self.process_response(response)
 
     @timed
-    async def index_search(self, name, indexes=(), columns=(), filters: List[Filter] = (), sort: Sort = None, page=1, language="en", string_algo="match"):
+    async def index_search(self, name, indexes=(), columns=(), filters: List[Filter] = (), sort: Sort = None, page=1, per_page=10, language="en", string_algo="match"):
         """|coro|
         Search for data from on specific indexes.
         Parameters
@@ -303,7 +303,9 @@ class XIVAPIClient:
                             }
                         }]
                     }
-                }
+                },
+                "from": (page * per_page),
+                "size": per_page
             }
         }
 
